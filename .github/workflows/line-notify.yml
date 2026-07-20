@@ -32,14 +32,20 @@ jobs:
           END_DATE="${{ github.event.client_payload.endDate }}"
           [ -z "$END_DATE" ] && END_DATE="-"
           
+          UNDERCONTROL="${{ github.event.client_payload.undercontrol }}"
+          [ -z "$UNDERCONTROL" ] && UNDERCONTROL="-"
+
+          ADDRESS="${{ github.event.client_payload.address }}"
+          [ -z "$ADDRESS" ] && ADDRESS="-"
+
           REASON="${{ github.event.client_payload.reason }}"
           [ -z "$REASON" ] && REASON="-"
           
           PROVINCE="${{ github.event.client_payload.province }}"
           [ -z "$PROVINCE" ] && PROVINCE="-"
           
-          UNDERCONTROL="${{ github.event.client_payload.undercontrol }}"
-          [ -z "$UNDERCONTROL" ] && UNDERCONTROL="-"
+          PHONE="${{ github.event.client_payload.phone }}"
+          [ -z "$PHONE" ] && PHONE="-"
 
           # 4. วนลูปยิงเข้า LINE ของแต่ละกลุ่ม
           for GROUP_ID in "${GROUP_IDS[@]}"; do
@@ -65,12 +71,15 @@ jobs:
                       \"type\": \"box\",
                       \"layout\": \"vertical\",
                       \"contents\": [
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"👤 ยศ-ชื่อ-สกุล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$NAME\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📅 ประเภทลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$TYPE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 วันที่ลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE ถึง $END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"👤 ยศ ชื่อ-สกุล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$NAME\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📅 ประเภทการลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$TYPE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 เริ่มต้นวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 Сิ้นสุดวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🏠 ที่อยู่:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$ADDRESS\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📞 เบอร์โทร:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PHONE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📝 เหตุผล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$REASON\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 จังหวัด:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PROVINCE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 ควบคุม สภ.:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 จังหวัดที่ลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PROVINCE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 สภ.ฯ ที่รับผิดชอบ:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"separator\", \"margin\": \"lg\" },
                         { \"type\": \"text\", \"text\": \"ส่งคำขอเมื่อ: $TIMESTAMP\", \"size\": \"xs\", \"color\": \"#999999\", \"margin\": \"md\" }
                       ]

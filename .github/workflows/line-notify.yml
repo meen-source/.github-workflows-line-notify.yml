@@ -11,20 +11,35 @@ jobs:
       - name: Send Flex Message to LINE Groups
         run: |
           # 1. ใส่ไอดีกลุ่ม LINE ทั้งหมดที่ต้องการส่งหาตรงนี้ (เว้นวรรคคั่นระหว่างกลุ่ม)
-          GROUP_IDS=("C92152dd46138c37a70c0c0f946c63950" "C05c655743a65a27f6c03dcce96da31d6" "C59991631b2783da8b0c4841d3807a870" "C5bb28300750dfa548256c9f5e65a1b21" "C92152dd46138c37a70c0c0f946c63950")
+          GROUP_IDS=("C92152dd46138c37a70c0c0f946c63950" "C05c655743a65a27f6c03dcce96da31d6" "C59991631b2783da8b0c4841d3807a870" "C5bb28300750dfa548256c9f5e65a1b21")
           
           # 2. ใส่ Channel Access Token ของ LINE OA ตรงนี้
           TOKEN="v4Dhujt2BgLzguVUl+jnKPWOSnimbdbxS1oeqQxVmtigyRoeXM9t9pJuPM5Kq7tTkdPmz3eWiWVfj1fjiElXXKpg+cN9TkoNBwdKMPfc3S9et11AS4DZPAFe51pQPxWXbcDc8VESnL5Zow2C/LtDgwdB04t89/1O/w1cDnyilFU="
 
-          # 3. ดึงค่าตัวแปรทั้งหมดที่ส่งมาจาก Google Sheets
+          # 3. ดึงค่าตัวแปรทั้งหมด และดักจับถ้ามีค่าว่างให้ใส่ "-" แทนทันทีป้องกันข้อความพัง
           TIMESTAMP="${{ github.event.client_payload.timestamp }}"
+          [ -z "$TIMESTAMP" ] && TIMESTAMP="-"
+          
           NAME="${{ github.event.client_payload.name }}"
+          [ -z "$NAME" ] && NAME="-"
+          
           TYPE="${{ github.event.client_payload.type }}"
+          [ -z "$TYPE" ] && TYPE="-"
+          
           START_DATE="${{ github.event.client_payload.startDate }}"
+          [ -z "$START_DATE" ] && START_DATE="-"
+          
           END_DATE="${{ github.event.client_payload.endDate }}"
+          [ -z "$END_DATE" ] && END_DATE="-"
+          
           REASON="${{ github.event.client_payload.reason }}"
+          [ -z "$REASON" ] && REASON="-"
+          
           PROVINCE="${{ github.event.client_payload.province }}"
+          [ -z "$PROVINCE" ] && PROVINCE="-"
+          
           UNDERCONTROL="${{ github.event.client_payload.undercontrol }}"
+          [ -z "$UNDERCONTROL" ] && UNDERCONTROL="-"
 
           # 4. วนลูปยิงเข้า LINE ของแต่ละกลุ่ม
           for GROUP_ID in "${GROUP_IDS[@]}"; do

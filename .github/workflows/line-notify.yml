@@ -11,7 +11,7 @@ jobs:
       - name: Send Flex Message to LINE Groups
         run: |
           # 1. ใส่ไอดีกลุ่ม LINE ทั้งหมดที่ต้องการส่งหาตรงนี้ (เว้นวรรคคั่นระหว่างกลุ่ม)
-          GROUP_IDS=("ใส่_GROUP_ID_กลุ่มที่_1" "ใส่_GROUP_ID_กลุ่มที่_2")
+          GROUP_IDS=("C92152dd46138c37a70c0c0f946c63950" "ใส่_GROUP_ID_กลุ่มที่_2")
           
           # 2. ใส่ Channel Access Token ของ LINE OA ตรงนี้
           TOKEN="v4Dhujt2BgLzguVUl+jnKPWOSnimbdbxS1oeqQxVmtigyRoeXM9t9pJuPM5Kq7tTkdPmz3eWiWVfj1fjiElXXKpg+cN9TkoNBwdKMPfc3S9et11AS4DZPAFe51pQPxWXbcDc8VESnL5Zow2C/LtDgwdB04t89/1O/w1cDnyilFU="

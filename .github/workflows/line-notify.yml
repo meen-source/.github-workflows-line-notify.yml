@@ -60,13 +60,13 @@ jobs:
                         { \"type\": \"text\", \"text\": \"ส่งคำขอเมื่อ: $TIMESTAMP\", \"size\": \"xs\", \"color\": \"#999999\", \"margin\": \"md\" }
                       ]
                     },
-                    \"footer\": {
+                  "footer": {
                       \"type\": \"box\",
                       \"layout\": \"horizontal\",
                       \"spacing\": \"md\",
                       \"contents\": [
-                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#28A745\", \"action\": { \"type\": \"message\", \"label\": \"✅ อนุมัติ\", \"text\": \"🟢 อนุมัติคำขอของ: $NAME\" } },
-                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#DC3545\", \"action\": { \"type\": \"message\", \"label\": \"❌ ไม่อนุมัติ\", \"text\": \"🔴 ไม่อนุมัติคำขอของ: $NAME\" } }
+                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#28A745\", \"action\": { \"type\": \"message\", \"label\": \"✅ กดเพื่อพิมพ์อนุมัติ\", \"text\": \"🟢 [ผลพิจารณา]: อนุมัติคำขอลาของ $NAME เรียบร้อยแล้ว\" } },
+                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#DC3545\", \"action\": { \"type\": \"message\", \"label\": \"❌ กดเพื่อพิมพ์ไม่อนุมัติ\", \"text\": \"🔴 [ผลพิจารณา]: ไม่อนุมัติคำขอลาของ $NAME\" } }
                       ]
                     }
                   }

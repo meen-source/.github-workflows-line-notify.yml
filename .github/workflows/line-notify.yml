@@ -1,0 +1,75 @@
+name: Send LINE Multi-Group Message
+
+on:
+  repository_dispatch:
+    types: [form_submitted]
+
+jobs:
+  send-line:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Flex Message to LINE Groups
+        run: |
+          # 1. ใส่ไอดีกลุ่ม LINE ทั้งหมดที่ต้องการส่งหาตรงนี้ (เว้นวรรคคั่นระหว่างกลุ่ม)
+          GROUP_IDS=("ใส่_GROUP_ID_กลุ่มที่_1" "ใส่_GROUP_ID_กลุ่มที่_2")
+          
+          # 2. ใส่ Channel Access Token ของ LINE OA ตรงนี้
+          TOKEN="v4Dhujt2BgLzguVUl+jnKPWOSnimbdbxS1oeqQxVmtigyRoeXM9t9pJuPM5Kq7tTkdPmz3eWiWVfj1fjiElXXKpg+cN9TkoNBwdKMPfc3S9et11AS4DZPAFe51pQPxWXbcDc8VESnL5Zow2C/LtDgwdB04t89/1O/w1cDnyilFU="
+
+          # 3. ดึงค่าตัวแปรทั้งหมดที่ส่งมาจาก Google Sheets
+          TIMESTAMP="${{ github.event.client_payload.timestamp }}"
+          NAME="${{ github.event.client_payload.name }}"
+          TYPE="${{ github.event.client_payload.type }}"
+          START_DATE="${{ github.event.client_payload.startDate }}"
+          END_DATE="${{ github.event.client_payload.endDate }}"
+          REASON="${{ github.event.client_payload.reason }}"
+          PROVINCE="${{ github.event.client_payload.province }}"
+          UNDERCONTROL="${{ github.event.client_payload.undercontrol }}"
+
+          # 4. วนลูปยิงเข้า LINE ของแต่ละกลุ่ม
+          for GROUP_ID in "${GROUP_IDS[@]}"; do
+            curl -X POST https://api.line.me/v2/bot/message/push \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $TOKEN" \
+              -d "{
+                \"to\": \"$GROUP_ID\",
+                \"messages\": [{
+                  \"type\": \"flex\",
+                  \"altText\": \"🚨 มีคำขอลา/สืบสวนหาข่าว ใหม่เข้ามาจาก $NAME\",
+                  \"contents\": {
+                    \"type\": \"bubble\",
+                    \"size\": \"giga\",
+                    \"header\": {
+                      \"type\": \"box\",
+                      \"layout\": \"vertical\",
+                      \"backgroundColor\": \"#8E1C1C\",
+                      \"paddingAll\": \"15px\",
+                      \"contents\": [{ \"type\": \"text\", \"text\": \"📢 แจ้งเตือนคำขอลา / สืบสวนหาข่าว\", \"weight\": \"bold\", \"size\": \"md\", \"color\": \"#FFFFFF\" }]
+                    },
+                    \"body\": {
+                      \"type\": \"box\",
+                      \"layout\": \"vertical\",
+                      \"contents\": [
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"👤 ยศ-ชื่อ-สกุล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$NAME\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📅 ประเภทลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$TYPE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 วันที่ลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE ถึง $END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📝 เหตุผล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$REASON\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 จังหวัด:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PROVINCE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 ควบคุม สภ.:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"separator\", \"margin\": \"lg\" },
+                        { \"type\": \"text\", \"text\": \"ส่งคำขอเมื่อ: $TIMESTAMP\", \"size\": \"xs\", \"color\": \"#999999\", \"margin\": \"md\" }
+                      ]
+                    },
+                    \"footer\": {
+                      \"type\": \"box\",
+                      \"layout\": \"horizontal\",
+                      \"spacing\": \"md\",
+                      \"contents\": [
+                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#28A745\", \"action\": { \"type\": \"message\", \"label\": \"✅ อนุมัติ\", \"text\": \"🟢 อนุมัติคำขอของ: $NAME\" } },
+                        { \"type\": \"button\", \"style\": \"primary\", \"color\": \"#DC3545\", \"action\": { \"type\": \"message\", \"label\": \"❌ ไม่อนุมัติ\", \"text\": \"🔴 ไม่อนุมัติคำขอของ: $NAME\" } }
+                      ]
+                    }
+                  }
+                }]
+              }"
+          done

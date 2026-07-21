@@ -16,7 +16,7 @@ jobs:
           # 2. ใส่ Channel Access Token ของ LINE OA ตรงนี้
           TOKEN="v4Dhujt2BgLzguVUl+jnKPWOSnimbdbxS1oeqQxVmtigyRoeXM9t9pJuPM5Kq7tTkdPmz3eWiWVfj1fjiElXXKpg+cN9TkoNBwdKMPfc3S9et11AS4DZPAFe51pQPxWXbcDc8VESnL5Zow2C/LtDgwdB04t89/1O/w1cDnyilFU="
 
-          # 3. ดึงค่าตัวแปรทั้งหมด
+          # 3. ดึงค่าตัวแปร
           TIMESTAMP="${{ github.event.client_payload.timestamp }}"
           [ -z "$TIMESTAMP" ] && TIMESTAMP="-"
           
@@ -41,13 +41,9 @@ jobs:
           REASON="${{ github.event.client_payload.reason }}"
           [ -z "$REASON" ] && REASON="-"
           
-          PROVINCE="${{ github.event.client_payload.province }}"
-          [ -z "$PROVINCE" ] && PROVINCE="-"
-          
           PHONE="${{ github.event.client_payload.phone }}"
           [ -z "$PHONE" ] && PHONE="-"
 
-          # 📍 ตัวแปรลิงก์พิกัด Google Maps
           MAP_URL="${{ github.event.client_payload.mapUrl }}"
           [ -z "$MAP_URL" ] && MAP_URL="https://www.google.com/maps"
 
@@ -79,10 +75,9 @@ jobs:
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📅 ประเภทการลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$TYPE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 เริ่มต้นวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 สิ้นสุดวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🏠 ที่อยู่:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$ADDRESS\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🏠 ที่อยู่ขณะลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$ADDRESS\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📞 เบอร์โทร:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PHONE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📝 เหตุผล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$REASON\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 จังหวัดที่ลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PROVINCE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 สภ.ฯ ที่รับผิดชอบ:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"separator\", \"margin\": \"lg\" },
                         { \"type\": \"text\", \"text\": \"ส่งคำขอเมื่อ: $TIMESTAMP\", \"size\": \"xs\", \"color\": \"#999999\", \"margin\": \"md\" }
@@ -102,7 +97,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"✅ อนุมัติ\", 
-                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS ($PROVINCE)\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\n📍 พิกัด: $MAP_URL\" 
+                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\n📍 พิกัด: $MAP_URL\" 
                             } 
                           },
                           { 

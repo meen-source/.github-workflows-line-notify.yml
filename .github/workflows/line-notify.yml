@@ -10,13 +10,9 @@ jobs:
     steps:
       - name: Send Flex Message to LINE Groups
         run: |
-          # 1. ใส่ไอดีกลุ่ม LINE ทั้งหมดที่ต้องการส่งหาตรงนี้ (เว้นวรรคคั่นระหว่างกลุ่ม)
           GROUP_IDS=("C92152dd46138c37a70c0c0f946c63950" "C05c655743a65a27f6c03dcce96da31d6" "C59991631b2783da8b0c4841d3807a870" "C5bb28300750dfa548256c9f5e65a1b21")
-          
-          # 2. ใส่ Channel Access Token ของ LINE OA ตรงนี้
           TOKEN="v4Dhujt2BgLzguVUl+jnKPWOSnimbdbxS1oeqQxVmtigyRoeXM9t9pJuPM5Kq7tTkdPmz3eWiWVfj1fjiElXXKpg+cN9TkoNBwdKMPfc3S9et11AS4DZPAFe51pQPxWXbcDc8VESnL5Zow2C/LtDgwdB04t89/1O/w1cDnyilFU="
 
-          # 3. ดึงค่าตัวแปร
           TIMESTAMP="${{ github.event.client_payload.timestamp }}"
           [ -z "$TIMESTAMP" ] && TIMESTAMP="-"
           
@@ -47,7 +43,6 @@ jobs:
           PHONE="${{ github.event.client_payload.phone }}"
           [ -z "$PHONE" ] && PHONE="-"
 
-          # 4. วนลูปยิงเข้า LINE ของแต่ละกลุ่ม
           for GROUP_ID in "${GROUP_IDS[@]}"; do
             curl -X POST https://api.line.me/v2/bot/message/push \
               -H "Content-Type: application/json" \
@@ -76,7 +71,7 @@ jobs:
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 เริ่มต้นวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 สิ้นสุดวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🏠 ที่อยู่ขณะลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$ADDRESS\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
-                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 ลิงก์แผนที่:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$MAP_URL\", \"size\": \"sm\", \"color\": \"#0066CC\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 พิกัด:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$MAP_URL\", \"size\": \"sm\", \"color\": \"#0066CC\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📞 เบอร์โทร:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PHONE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📝 เหตุผล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$REASON\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 สภ.ฯ ที่รับผิดชอบ:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
@@ -97,7 +92,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"✅ อนุมัติ\", 
-                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n📍 พิกัด: $MAP_URL\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\" 
+                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ มาตรการพิทักษ์กำลังพล สภ.บาเจาะ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n📍 พิกัด: $MAP_URL\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\" 
                             } 
                           },
                           { 
@@ -107,7 +102,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"❌ ไม่อนุมัติ\", 
-                              \"text\": \"🔴 [ผลการพิจารณา: ไม่อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n📝 เหตุผล: $REASON\" 
+                              \"text\": \"🔴 [ผลการพิจารณา: ไม่อนุมัติ มาตรการพิทักษ์กำลังพล สภ.บาเจาะ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n📝 เหตุผล: $REASON\" 
                             } 
                           }
                         ]}

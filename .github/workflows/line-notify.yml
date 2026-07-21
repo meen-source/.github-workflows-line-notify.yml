@@ -38,14 +38,14 @@ jobs:
           ADDRESS="${{ github.event.client_payload.address }}"
           [ -z "$ADDRESS" ] && ADDRESS="-"
 
+          MAP_URL="${{ github.event.client_payload.mapUrl }}"
+          [ -z "$MAP_URL" ] && MAP_URL="-"
+
           REASON="${{ github.event.client_payload.reason }}"
           [ -z "$REASON" ] && REASON="-"
           
           PHONE="${{ github.event.client_payload.phone }}"
           [ -z "$PHONE" ] && PHONE="-"
-
-          MAP_URL="${{ github.event.client_payload.mapUrl }}"
-          [ -z "$MAP_URL" ] && MAP_URL="https://www.google.com/maps"
 
           # 4. วนลูปยิงเข้า LINE ของแต่ละกลุ่ม
           for GROUP_ID in "${GROUP_IDS[@]}"; do
@@ -76,6 +76,7 @@ jobs:
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 เริ่มต้นวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$START_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📆 สิ้นสุดวันลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$END_DATE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🏠 ที่อยู่ขณะลา:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$ADDRESS\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
+                        { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📍 ลิงก์แผนที่:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$MAP_URL\", \"size\": \"sm\", \"color\": \"#0066CC\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📞 เบอร์โทร:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$PHONE\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"📝 เหตุผล:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$REASON\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"margin\": \"sm\", \"contents\": [{ \"type\": \"text\", \"text\": \"🚔 สภ.ฯ ที่รับผิดชอบ:\", \"weight\": \"bold\", \"size\": \"sm\", \"color\": \"#555555\", \"flex\": 2 }, { \"type\": \"text\", \"text\": \"$UNDERCONTROL\", \"size\": \"sm\", \"color\": \"#111111\", \"flex\": 3, \"wrap\": true }] },
@@ -88,7 +89,6 @@ jobs:
                       \"layout\": \"vertical\",
                       \"spacing\": \"sm\",
                       \"contents\": [
-                        { \"type\": \"button\", \"style\": \"secondary\", \"color\": \"#17A2B8\", \"action\": { \"type\": \"uri\", \"label\": \"📍 เปิดแผนที่ Google Maps\", \"uri\": \"$MAP_URL\" } },
                         { \"type\": \"box\", \"layout\": \"horizontal\", \"spacing\": \"sm\", \"contents\": [
                           { 
                             \"type\": \"button\", 
@@ -97,7 +97,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"✅ อนุมัติ\", 
-                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\n📍 พิกัด: $MAP_URL\" 
+                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n📍 พิกัด: $MAP_URL\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\" 
                             } 
                           },
                           { 

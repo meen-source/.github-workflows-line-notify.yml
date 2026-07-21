@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Send Flex Message to LINE Groups
         run: |
-          GROUP_IDS=("C59991631b2783da8b0c4841d3807a870" "C05c655743a65a27f6c03dcce96da31d6")
+          GROUP_IDS=("Cf6274fa0d7d16047372a079e999cd530")
           TOKEN="OqbfAmWLiZcrcDlRtXjI0LShX9fBJJXeAJcQKuVjKS9wYTelq50YemI82NwHBOT7YktRR9C0pHgnpUe172uurXFxfOlNK6yDU6PVnUb0clqejpenNLKx4YBiBMEOgfK4sBzdcXai8r8qK6At8DP9XgdB04t89/1O/w1cDnyilFU="
 
           TIMESTAMP="${{ github.event.client_payload.timestamp }}"

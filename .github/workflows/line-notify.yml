@@ -92,7 +92,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"✅ อนุมัติ\", 
-                              \"text\": \"🟢 [ผลการพิจารณา: อนุมัติ มาตรการพิทักษ์กำลังพล สภ.บาเจาะ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n🏠 ที่อยู่: $ADDRESS\n📍 พิกัด: $MAP_URL\n🚔 สภ.ฯ รับผิดชอบ: $UNDERCONTROL\n📞 เบอร์โทร: $PHONE\n📝 เหตุผล: $REASON\" 
+                              \"text\": \"🟢 [ผลพิจารณา: อนุมัติ]\n👤 $NAME ($TYPE)\n📆 $START_DATE ถึง $END_DATE\n📞 $PHONE\" 
                             } 
                           },
                           { 
@@ -102,7 +102,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"❌ ไม่อนุมัติ\", 
-                              \"text\": \"🔴 [ผลการพิจารณา: ไม่อนุมัติ]\n👤 ชื่อ-สกุล: $NAME\n📅 ประเภท: $TYPE\n📆 ตั้งแต่: $START_DATE ถึง $END_DATE\n📝 เหตุผล: $REASON\" 
+                              \"text\": \"🔴 [ผลพิจารณา: ไม่อนุมัติ]\n👤 $NAME ($TYPE)\n📆 $START_DATE ถึง $END_DATE\" 
                             } 
                           }
                         ]}

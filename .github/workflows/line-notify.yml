@@ -92,7 +92,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"✅ อนุมัติ\", 
-                              \"text\": \"🟢 [ผลพิจารณา: อนุมัติ]\n👤 $NAME ($TYPE)\n📆 $START_DATE ถึง $END_DATE\n📞 $PHONE\" 
+                              \"text\": \"🟢 [ผลพิจารณา: อนุมัติการลา]\nกำลังพล: $NAME\nการลา: $TYPE ($START_DATE - $END_DATE)\nที่พักขณะลา: $ADDRESS\nพิกัด: $MAP_URL\nหน่วยรับผิดชอบ: สภ.$UNDERCONTROL (โทร.$PHONE)\nเหตุผล: $REASON\" 
                             } 
                           },
                           { 
@@ -102,7 +102,7 @@ jobs:
                             \"action\": { 
                               \"type\": \"message\", 
                               \"label\": \"❌ ไม่อนุมัติ\", 
-                              \"text\": \"🔴 [ผลพิจารณา: ไม่อนุมัติ]\n👤 $NAME ($TYPE)\n📆 $START_DATE ถึง $END_DATE\" 
+                              \"text\": \"🔴 [ผลพิจารณา: ไม่อนุมัติการลา]\nกำลังพล: $NAME\nการลา: $TYPE ($START_DATE - $END_DATE)\nเหตุผล: $REASON\" 
                             } 
                           }
                         ]}
